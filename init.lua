@@ -44,7 +44,6 @@ vim.o.smartcase = true
 
 -- Keep signcolumn on by default
 vim.o.signcolumn = 'yes'
-
 -- Decrease update time
 vim.o.updatetime = 300
 
@@ -63,8 +62,16 @@ vim.o.splitbelow = true
 --  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
 --   See `:help lua-options`
 --   and `:help lua-options-guide`
+
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+-- Global options for tabs and indentation
+vim.opt.tabstop = 2 -- A hard tab is N columns wide
+vim.opt.shiftwidth = 2 -- Size of an indentation (used by autoindent, >>, <<, etc)
+vim.opt.expandtab = true -- Converts tabs to spaces
+vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for in insert mode
+vim.opt.autoindent = true -- Copy indent from the previous line
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -333,11 +340,11 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -362,7 +369,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -644,9 +650,8 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'pyright', 'jdtls', 'hls', 'vtsls' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
           function(server_name)
@@ -761,7 +766,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -905,8 +910,14 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  require 'kickstart.plugins.undotree',
   require 'kickstart.plugins.lazygit',
+  require 'kickstart.plugins.tmux-navigator',
+  require 'kickstart.plugins.flash-nvim',
+  require 'kickstart.plugins.copilot',
+  require 'kickstart.plugins.undotree',
+  require 'kickstart.plugins.vimtex',
+  require 'kickstart.plugins.molten',
+  require 'kickstart.plugins.jupytext',
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -939,5 +950,22 @@ require('lazy').setup({
   },
 })
 
+-- -- Custom quit behaviors
+-- vim.api.nvim_create_user_command('Q', function()
+--   if vim.bo.filetype == 'neo-tree' then
+--     vim.cmd('qa')
+--   else
+--     vim.cmd('q')
+--   end
+-- end, {})
+--
+-- vim.api.nvim_create_user_command('WQ', function()
+--   if vim.bo.filetype == 'neo-tree' then
+--     vim.cmd('qa')
+--   else
+--     vim.cmd('wq')
+--   end
+-- end, {})
+--
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
