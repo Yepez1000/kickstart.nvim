@@ -15,6 +15,13 @@ return {
     { '<Leader>e', ':Neotree reveal<CR>', desc = 'NeoTree Reveal Leader Key', silent = true },
   },
   opts = {
+    open_files_do_not_replace_types = { 'terminal', 'trouble', 'qf' },
+    window = {
+      mappings = {
+        ['S'] = 'open_split',
+        ['s'] = 'open_vsplit',
+      },
+    },
     filesystem = {
       window = {
         mappings = {

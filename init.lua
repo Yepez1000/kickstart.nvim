@@ -1,5 +1,6 @@
--- Set <space> as the leader key
+-- Set <space> as the leader keye
 -- See `:help mapleader`
+--
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -124,6 +125,31 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Molten JupyterNotebook Keymaps
+vim.keymap.set('n', '<localleader>im', ':MoltenInit<CR>', { silent = true, desc = 'Initialize the plugin' })
+vim.keymap.set('n', '<localleader>re', ':MoltenEvaluateOperator<CR>', { silent = true, desc = 'run operator selection' })
+vim.keymap.set('n', '<localleader>rl', ':MoltenEvaluateLine<CR>', { silent = true, desc = 'evaluate line' })
+vim.keymap.set('n', '<localleader>rr', ':MoltenReevaluateCell<CR>', { silent = true, desc = 're-evaluate cell' })
+vim.keymap.set('v', '<localleader>r', ':<C-u>MoltenEvaluateVisual<CR>gv', { silent = true, desc = 'evaluate visual selection' })
+
+-- vim.keymap.set('n', '<localleader>ik', function()
+--   local venv = os.getenv 'VIRTUAL_ENV' or os.getenv 'CONDA_PREFIX'
+--   if venv ~= nil then
+--     -- Get project name from current working directory
+--     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+--     vim.cmd(('MoltenInit %s'):format(project_name))
+--   else
+--     -- Check if local venv exists in cwd
+--     local cwd = vim.fn.getcwd()
+--     if vim.fn.isdirectory(cwd .. '/venv') == 1 or vim.fn.isdirectory(cwd .. '/.venv') == 1 then
+--       local project_name = vim.fn.fnamemodify(cwd, ':t')
+--       vim.cmd(('MoltenInit %s'):format(project_name))
+--     else
+--       vim.cmd 'MoltenInit python3'
+--     end
+--   end
+-- end, { desc = 'Initialize Molten for python3', silent = true })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -615,6 +641,21 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        jdtls = {
+          settings = {
+            java = {
+              configuration = {
+                runtimes = {
+                  {
+                    name = 'JavaFX-25',
+                    path = '/path/to/jdk',
+                    default = true,
+                  },
+                },
+              },
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -915,9 +956,16 @@ require('lazy').setup({
   require 'kickstart.plugins.flash-nvim',
   require 'kickstart.plugins.copilot',
   require 'kickstart.plugins.undotree',
+  require 'kickstart.plugins.bufferline',
   require 'kickstart.plugins.vimtex',
   require 'kickstart.plugins.molten',
   require 'kickstart.plugins.jupytext',
+  require 'kickstart.plugins.image',
+  require 'kickstart.plugins.lazydocker',
+  require 'kickstart.plugins.dadbod',
+  require 'kickstart.plugins.toggleterm',
+  require 'kickstart.plugins.opencode',
+
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
