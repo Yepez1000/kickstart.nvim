@@ -7,8 +7,9 @@ return {
     require('toggleterm').setup {
       -- 1. Default layout: 'horizontal', 'vertical', or 'float'
       direction = 'float',
-      -- 2. Open mapping: This toggles the terminal
-      open_mapping = [[<c-\>]],
+      -- 2. Open mapping: This toggles the terminal with <leader><leader>
+      -- You can use counts to toggle specific terminals: 2<leader><leader> for terminal 2, etc.
+      open_mapping = [[<leader><leader>]],
       -- 3. Styling the float
       float_opts = {
         border = 'curved',

@@ -20,9 +20,7 @@ return {
           win = {
             input = {
               keys = {
-
                 -- ['<a-a>'] = { 'opencode_send', mode = { 'n', 'i' } },
-                { '<leader>oc', '<cmd>OpenCodeToggle<cr>', desc = 'Toggle OpenCode AI' },
               },
             },
           },
@@ -37,6 +35,11 @@ return {
     }
 
     vim.o.autoread = true -- Required for `opts.events.reload`
+
+    -- Toggle OpenCode panel
+    vim.keymap.set({ 'n', 't' }, '<leader>oc', function()
+      require('opencode').toggle()
+    end, { desc = 'Toggle OpenCode AI' })
 
     -- Recommended/example keymaps
     vim.keymap.set({ 'n', 'x' }, '<C-a>', function()
