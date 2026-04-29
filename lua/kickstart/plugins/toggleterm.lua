@@ -9,7 +9,7 @@ return {
       direction = 'float',
       -- 2. Open mapping: This toggles the terminal with <leader><leader>
       -- You can use counts to toggle specific terminals: 2<leader><leader> for terminal 2, etc.
-      open_mapping = [[<leader><leader>]],
+      open_mapping = [[<leader>t]],
       -- 3. Styling the float
       float_opts = {
         border = 'curved',

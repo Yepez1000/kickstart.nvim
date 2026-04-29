@@ -68,11 +68,11 @@ vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Global options for tabs and indentation
-vim.opt.tabstop = 2 -- A hard tab is N columns wide
-vim.opt.shiftwidth = 2 -- Size of an indentation (used by autoindent, >>, <<, etc)
-vim.opt.expandtab = true -- Converts tabs to spaces
-vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for in insert mode
-vim.opt.autoindent = true -- Copy indent from the previous line
+-- vim.opt.tabstop = 2 -- A hard tab is N columns wide
+-- vim.opt.shiftwidth = 2 -- Size of an indentation (used by autoindent, >>, <<, etc)
+-- vim.opt.expandtab = true -- Converts tabs to spaces
+-- vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for in insert mode
+-- vim.opt.autoindent = true -- Copy indent from the previous line
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -955,7 +955,7 @@ require('lazy').setup({
   require 'kickstart.plugins.lazygit',
   require 'kickstart.plugins.tmux-navigator',
   require 'kickstart.plugins.flash-nvim',
-  require 'kickstart.plugins.copilot',
+  -- require 'kickstart.plugins.copilot',
   require 'kickstart.plugins.undotree',
   require 'kickstart.plugins.bufferline',
   require 'kickstart.plugins.vimtex',
@@ -966,6 +966,10 @@ require('lazy').setup({
   require 'kickstart.plugins.dadbod',
   require 'kickstart.plugins.toggleterm',
   require 'kickstart.plugins.opencode',
+  require 'kickstart.plugins.tpipeline',
+  -- require 'kickstart.plugins.tabout',
+  --
+  -- require 'kickstart.plugins.tmux-status',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
