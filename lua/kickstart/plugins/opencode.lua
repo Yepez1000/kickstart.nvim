@@ -32,9 +32,54 @@ return {
     ---@type opencode.Opts
     vim.g.opencode_opts = {
       -- Your configuration, if any; goto definition on the type or field for details
+      server = {
+        start = function()
+          require('opencode.terminal').open('opencode --port', {
+            split = 'right',
+            width = math.floor(vim.o.columns * 0.25), -- Make window 25% of screen width (smaller)
+          })
+        end,
+        stop = function()
+          require('opencode.terminal').close()
+        end,
+        toggle = function()
+          require('opencode.terminal').toggle('opencode --port', {
+            split = 'right',
+            width = math.floor(vim.o.columns * 0.25), -- Make window 25% of screen width (smaller)
+          })
+        end,
+      },
     }
 
     vim.o.autoread = true -- Required for `opts.events.reload`
+
+    -- Set up tmux navigation keybindings and escape fix for opencode terminal
+    vim.api.nvim_create_autocmd('TermOpen', {
+      callback = function(event)
+        -- Check if this is the opencode terminal
+        local job_id = vim.b[event.buf].terminal_job_id
+        if job_id then
+          local opts = { buffer = event.buf, silent = true }
+
+          -- Fix: Exit terminal mode cleanly with single Escape press
+          -- Terminal mode -> Normal mode directly
+          vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', vim.tbl_extend('force', opts, { desc = 'Exit terminal mode' }))
+
+          -- Tmux navigation - use the exact same format as vim-tmux-navigator
+          -- These will trigger the lazy loading of the plugin
+          vim.keymap.set('t', '<C-h>', '<C-\\><C-n><Cmd>TmuxNavigateLeft<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate left (tmux)' }))
+          vim.keymap.set('t', '<C-j>', '<C-\\><C-n><Cmd>TmuxNavigateDown<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate down (tmux)' }))
+          vim.keymap.set('t', '<C-k>', '<C-\\><C-n><Cmd>TmuxNavigateUp<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate up (tmux)' }))
+          vim.keymap.set('t', '<C-l>', '<C-\\><C-n><Cmd>TmuxNavigateRight<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate right (tmux)' }))
+
+          -- Also add for normal mode when browsing the terminal output
+          vim.keymap.set('n', '<C-h>', '<Cmd>TmuxNavigateLeft<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate left (tmux)' }))
+          vim.keymap.set('n', '<C-j>', '<Cmd>TmuxNavigateDown<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate down (tmux)' }))
+          vim.keymap.set('n', '<C-k>', '<Cmd>TmuxNavigateUp<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate up (tmux)' }))
+          vim.keymap.set('n', '<C-l>', '<Cmd>TmuxNavigateRight<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate right (tmux)' }))
+        end
+      end,
+    })
 
     -- Toggle OpenCode panel
     vim.keymap.set({ 'n', 't' }, '<leader>oc', function()
