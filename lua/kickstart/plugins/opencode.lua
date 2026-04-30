@@ -114,5 +114,25 @@ return {
     -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
     vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
     vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
+
+    -- Focus OpenCode terminal with 'gi' in normal mode
+    vim.keymap.set('n', 'gi', function()
+      -- Find the opencode terminal window
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local buf_name = vim.fn.bufname(buf)
+        -- Check if this is a terminal buffer (usually term:// or empty name for term buffers)
+        if vim.bo[buf].buftype == 'terminal' then
+          vim.api.nvim_set_current_win(win)
+          vim.cmd 'startinsert'
+          return
+        end
+      end
+      -- If terminal not found, toggle it to open
+      require('opencode').toggle()
+      vim.schedule(function()
+        vim.cmd 'startinsert'
+      end)
+    end, { desc = 'Focus OpenCode terminal and enter insert mode' })
   end,
 }

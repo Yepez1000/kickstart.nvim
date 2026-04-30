@@ -16,7 +16,7 @@ return {
         winblend = 3,
       },
       -- 4. Automatically insert mode when opening
-      start_in_insert = true,
+      start_in_insert = false,
     }
   end,
 }
