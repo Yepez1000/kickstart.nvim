@@ -68,11 +68,11 @@ vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Global options for tabs and indentation
--- vim.opt.tabstop = 2 -- A hard tab is N columns wide
--- vim.opt.shiftwidth = 2 -- Size of an indentation (used by autoindent, >>, <<, etc)
--- vim.opt.expandtab = true -- Converts tabs to spaces
--- vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for in insert mode
--- vim.opt.autoindent = true -- Copy indent from the previous line
+vim.opt.tabstop = 2 -- A hard tab is N columns wide
+vim.opt.shiftwidth = 2 -- Size of an indentation (used by autoindent, >>, <<, etc)
+vim.opt.expandtab = true -- Converts tabs to spaces
+vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for in insert mode
+vim.opt.autoindent = true -- Copy indent from the previous line
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -950,7 +950,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'kickstart.plugins.lazygit',
   require 'kickstart.plugins.tmux-navigator',
@@ -967,6 +967,10 @@ require('lazy').setup({
   require 'kickstart.plugins.toggleterm',
   require 'kickstart.plugins.opencode',
   require 'kickstart.plugins.tpipeline',
+  require 'kickstart.plugins.yazi',
+  require 'kickstart.plugins.copydiagnostics',
+  -- require 'kickstart.plugins.conform',
+
   -- require 'kickstart.plugins.tabout',
   --
   -- require 'kickstart.plugins.tmux-status',
