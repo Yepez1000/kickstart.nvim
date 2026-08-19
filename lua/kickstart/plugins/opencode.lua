@@ -85,6 +85,9 @@ return {
     vim.keymap.set({ 'n', 't' }, '<leader>oc', function()
       require('opencode').toggle()
     end, { desc = 'Toggle OpenCode AI' })
+    vim.keymap.set({ 'n', 't' }, '<C-.>', function()
+      require('opencode').toggle()
+    end, { desc = 'Toggle opencode' })
 
     -- Recommended/example keymaps
     vim.keymap.set({ 'n', 'x' }, '<C-a>', function()
@@ -93,10 +96,6 @@ return {
     vim.keymap.set({ 'n', 'x' }, '<C-x>', function()
       require('opencode').select()
     end, { desc = 'Execute opencode action…' })
-    vim.keymap.set({ 'n', 't' }, '<C-.>', function()
-      require('opencode').toggle()
-    end, { desc = 'Toggle opencode' })
-
     vim.keymap.set({ 'n', 'x' }, 'go', function()
       return require('opencode').operator '@this '
     end, { desc = 'Add range to opencode', expr = true })
@@ -115,7 +114,40 @@ return {
     vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
     vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
 
-    -- Focus OpenCode terminal with 'gi' in normal mode
+    -- Resize the OpenCode panel (tap repeatedly).
+    local function find_opencode_window()
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == 'terminal' then
+          local bufname = vim.api.nvim_buf_get_name(buf)
+          if bufname:find('opencode', 1, true) then
+            return win
+          end
+        end
+      end
+
+      return nil
+    end
+
+    local function resize_opencode(delta)
+      local win = find_opencode_window()
+      if not win then
+        vim.notify('OpenCode panel not found', vim.log.levels.WARN)
+        return
+      end
+
+      local width = vim.api.nvim_win_get_width(win)
+      vim.api.nvim_win_set_width(win, math.max(20, width + delta))
+    end
+
+    vim.keymap.set({ 'n', 't' }, '<M-l>', function()
+      resize_opencode(-10 * vim.v.count1)
+    end, { desc = 'Narrow OpenCode panel' })
+    vim.keymap.set({ 'n', 't' }, '<M-h>', function()
+      resize_opencode(10 * vim.v.count1)
+    end, { desc = 'Widen OpenCode panel' })
+
+    -- Focus opencode terminal with 'gi' in normal mode
     vim.keymap.set('n', 'gi', function()
       -- Find the opencode terminal window
       for _, win in ipairs(vim.api.nvim_list_wins()) do
